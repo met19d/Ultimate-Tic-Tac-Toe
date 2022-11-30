@@ -48,7 +48,6 @@ public class GameBoardPanel extends JPanel {
         public void actionPerformed(ActionEvent event) {
             gameState.player1_turn = !gameState.player1_turn;
         }
-        // compartimalize
     }
 
 }
