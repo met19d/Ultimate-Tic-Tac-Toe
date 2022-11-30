@@ -5,6 +5,7 @@ import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.*;
 
 public class GameBoard extends JPanel implements ActionListener {
     public String[][] board = {
@@ -12,10 +13,13 @@ public class GameBoard extends JPanel implements ActionListener {
             { "", "", "" },
             { "", "", "" }
     };
-    public String winner = "X";
+    public String winner = "";
+    public boolean frameDone = false;
+
     private List<JButton> buttonArray = new ArrayList<JButton>();
     private JButton[][] buttons = new JButton[3][3];
     private GameState gameState;
+    // TODO only highlight the square being played in
 
     public GameBoard(GameState gameState) {
         setLayout(new GridLayout(3, 3));
@@ -51,19 +55,100 @@ public class GameBoard extends JPanel implements ActionListener {
         int row = (int) clicked.getClientProperty("row");
         int col = (int) clicked.getClientProperty("column");
 
-        if (clicked.getText() == "") {
+        if (!boardFinished() && clicked.getText() == "") {
             if (gameState.player1_turn) {
-                buttons[row][col].setForeground(Color.blue);
-                buttons[row][col].setText("X");
+                clicked.setForeground(Color.BLUE);
+                clicked.setText("X");
                 board[row][col] = "X";
             } else {
-                buttons[row][col].setForeground(Color.red);
-                buttons[row][col].setText("O");
+                clicked.setForeground(Color.RED);
+                clicked.setText("O");
                 board[row][col] = "O";
             }
-            buttons[row][col].setEnabled(false);
-            this.setEnabled(false);
-            setBackground(Color.BLUE);
+            gameState.player1_turn = !gameState.player1_turn;
+
+            winner = checkWinner();
+        }
+
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        if (boardFinished()) {
+            setBackground(Color.GRAY);
+            drawCross(5, Color.BLUE);
+            SwingUtilities.invokeLater(() -> {
+                if (winner.equals("X"))
+                    drawCross(5, Color.BLUE);
+                else
+                    drawCircle(5, Color.RED);
+            });
+        } else {
+            setBackground(new Color(100, 0, 255));
+        }
+    }
+
+    private void drawCross(int thickness, Color c) {
+        Graphics2D g2d = (Graphics2D) getGraphics();
+        g2d.setStroke(new BasicStroke(thickness));
+        g2d.setColor(c);
+        g2d.drawLine(0, 0, getWidth(), getHeight());
+        g2d.drawLine(getWidth(), 0, 0, getHeight());
+    }
+
+    private void drawCircle(int thickness, Color c) {
+        Graphics2D g2d = (Graphics2D) getGraphics();
+        g2d.setColor(c);
+        g2d.setStroke(new BasicStroke(thickness));
+        g2d.drawOval(0, 0, getWidth(), getHeight());
+    }
+
+    private boolean boardFinished() {
+        return (checkWinner() != null);
+    }
+
+    private boolean equals3(String a, String b, String c) {
+        return (a.equals(b) && b.equals(c) && !a.equals(""));
+    }
+
+    private String checkWinner() {
+        String winner = null;
+        ArrayList<Integer> available = new ArrayList<Integer>();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j].equals("")) {
+                    available.add(1);
+                }
+            }
+        }
+
+        // horizontal
+        for (int i = 0; i < 3; i++) {
+            if (equals3(board[i][0], board[i][1], board[i][2])) {
+                winner = board[i][0];
+            }
+        }
+
+        // Vertical
+        for (int i = 0; i < 3; i++) {
+            if (equals3(board[0][i], board[1][i], board[2][i])) {
+                winner = board[0][i];
+            }
+        }
+
+        // Diagonal
+        if (equals3(board[0][0], board[1][1], board[2][2])) {
+            winner = board[0][0];
+        }
+        if (equals3(board[2][0], board[1][1], board[0][2])) {
+            winner = board[2][0];
+        }
+
+        if (winner == null && available.size() == 0) {
+            return "draw";
+        } else {
+            return winner;
         }
     }
 

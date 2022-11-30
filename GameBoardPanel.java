@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+// import java.awt.event.ActionListener;
+// import java.awt.event.ActionEvent;
 
 public class GameBoardPanel extends JPanel {
 
@@ -31,7 +31,7 @@ public class GameBoardPanel extends JPanel {
                 gameBoardButtons[i][j].putClientProperty("row", i % 3);
                 gameBoardButtons[i][j].putClientProperty("column", j % 3);
                 gameBoardButtons[i][j].setFont(new Font("BOLD", Font.BOLD, 35));
-                gameBoardButtons[i][j].addActionListener(new GameStateHandler());
+                // gameBoardButtons[i][j].addActionListener(new GameStateHandler());
                 localGameBoards[panelI][panelJ].add(gameBoardButtons[i][j]);
             }
         }
@@ -43,11 +43,11 @@ public class GameBoardPanel extends JPanel {
         }
     }
 
-    private class GameStateHandler implements ActionListener {
+    // private class GameStateHandler implements ActionListener {
 
-        public void actionPerformed(ActionEvent event) {
-            gameState.player1_turn = !gameState.player1_turn;
-        }
-    }
+    // public void actionPerformed(ActionEvent event) {
+    // // Do nothing for now
+    // }
+    // }
 
 }
