@@ -19,6 +19,8 @@ public class GameBoard extends JPanel implements ActionListener {
 
     public GameBoard(GameState gameState) {
         setLayout(new GridLayout(3, 3));
+        setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        setBackground(Color.BLACK);
         this.gameState = gameState;
     }
 
