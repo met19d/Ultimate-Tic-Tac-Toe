@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Font;
-// import java.awt.event.ActionListener;
-// import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GameBoardPanel extends JPanel {
 
@@ -28,10 +28,11 @@ public class GameBoardPanel extends JPanel {
             for (int j = 0; j < gameBoardButtons[i].length; j++) {
                 int panelJ = j / 3;
                 gameBoardButtons[i][j] = new JButton("");
+                gameBoardButtons[i][j].setBackground(Color.white);
                 gameBoardButtons[i][j].putClientProperty("row", i % 3);
                 gameBoardButtons[i][j].putClientProperty("column", j % 3);
                 gameBoardButtons[i][j].setFont(new Font("BOLD", Font.BOLD, 35));
-                // gameBoardButtons[i][j].addActionListener(new GameStateHandler());
+                gameBoardButtons[i][j].addActionListener(new GameStateHandler());
                 localGameBoards[panelI][panelJ].add(gameBoardButtons[i][j]);
             }
         }
@@ -43,11 +44,28 @@ public class GameBoardPanel extends JPanel {
         }
     }
 
-    // private class GameStateHandler implements ActionListener {
+    private class GameStateHandler implements ActionListener {
 
-    // public void actionPerformed(ActionEvent event) {
-    // // Do nothing for now
-    // }
-    // }
+        public void actionPerformed(ActionEvent event) {
+            if(localGameBoards[gameState.last_move.x][gameState.last_move.y].boardFinished())
+            { 
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        localGameBoards[i][j].setActive(true);
+                    }
+                    localGameBoards[gameState.last_move.x][gameState.last_move.y].setActive(false);
+                }
+            } else {
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        localGameBoards[i][j].setActive(false);
+                    }
+                }
+                localGameBoards[gameState.last_move.x][gameState.last_move.y].setActive(true);
+            }
+            
+            repaint();
+        }
+    }
 
 }

@@ -19,8 +19,8 @@ public class GameBoard extends JPanel implements ActionListener {
     private List<JButton> buttonArray = new ArrayList<JButton>();
     private JButton[][] buttons = new JButton[3][3];
     private GameState gameState;
-    // TODO only highlight the square being played in
-
+    private Boolean IsActive = true;
+    
     public GameBoard(GameState gameState) {
         setLayout(new GridLayout(3, 3));
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -55,7 +55,8 @@ public class GameBoard extends JPanel implements ActionListener {
         int row = (int) clicked.getClientProperty("row");
         int col = (int) clicked.getClientProperty("column");
 
-        if (!boardFinished() && clicked.getText() == "") {
+        if (!boardFinished() && clicked.getText() == "" && IsActive) {
+
             if (gameState.player1_turn) {
                 clicked.setForeground(Color.BLUE);
                 clicked.setText("X");
@@ -66,11 +67,14 @@ public class GameBoard extends JPanel implements ActionListener {
                 board[row][col] = "O";
             }
             gameState.player1_turn = !gameState.player1_turn;
-
+            gameState.last_move = new Coordinates(row, col); 
+            
             winner = checkWinner();
+            repaint();
         }
 
     }
+
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -88,6 +92,7 @@ public class GameBoard extends JPanel implements ActionListener {
         }
     }
 
+
     private void drawCross(int thickness, Color c) {
         Graphics2D g2d = (Graphics2D) getGraphics();
         g2d.setStroke(new BasicStroke(thickness));
@@ -103,7 +108,20 @@ public class GameBoard extends JPanel implements ActionListener {
         g2d.drawOval(0, 0, getWidth(), getHeight());
     }
 
-    private boolean boardFinished() {
+    public void setActive(boolean isactive) {
+        IsActive = isactive;
+        if(isactive){
+            for (JButton button : buttonArray) {
+                button.setBackground(Color.white);
+            }
+        } else {
+            for (JButton button : buttonArray) {
+                button.setBackground(Color.gray);
+            }
+        }
+    }
+    
+    public boolean boardFinished() {
         return (checkWinner() != null);
     }
 
