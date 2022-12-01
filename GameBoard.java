@@ -77,7 +77,6 @@ public class GameBoard extends JPanel implements ActionListener {
 
         if (boardFinished()) {
             setBackground(Color.GRAY);
-            drawCross(5, Color.BLUE);
             SwingUtilities.invokeLater(() -> {
                 if (winner.equals("X"))
                     drawCross(5, Color.BLUE);
