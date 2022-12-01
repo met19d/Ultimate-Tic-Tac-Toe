@@ -2,10 +2,11 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class GameBoardPanel extends JPanel {
+public class GameBoardPanel extends BaseGameBoard {
 
     private GameState gameState;
     private JButton[][] gameBoardButtons = new JButton[9][9];
@@ -44,6 +45,21 @@ public class GameBoardPanel extends JPanel {
         }
     }
 
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        if (boardFinished()) {
+            // Currently does not display
+            // But it does pick up who the winner is
+            // going to put check somewhere else
+            drawWinner();
+            SwingUtilities.invokeLater(() -> {
+                drawWinner();
+            });
+        }
+
+    }
+
     private class GameStateHandler implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
@@ -61,6 +77,12 @@ public class GameBoardPanel extends JPanel {
                     }
                 }
                 localGameBoards[gameState.last_move.x][gameState.last_move.y].setActive(true);
+            }
+            // Could be optimized but this is fine
+            for (int i = 0; i < localGameBoards.length; i++) {
+                for (int j = 0; j < localGameBoards[i].length; j++) {
+                    board[i][j] = localGameBoards[i][j].winner;
+                }
             }
 
             repaint();
