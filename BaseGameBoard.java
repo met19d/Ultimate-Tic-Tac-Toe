@@ -18,6 +18,14 @@ public class BaseGameBoard extends JPanel {
 
     public final static Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
+    public String getState(int row, int column) {
+        return board[row][column];
+    }
+
+    public void playMove(int row, int column, String play) {
+        board[row][column] = play;
+    }
+
     public void drawWinner() {
         if (winner.equals("X"))
             drawCross(5, crossColor);

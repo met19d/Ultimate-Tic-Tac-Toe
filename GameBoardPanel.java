@@ -8,11 +8,13 @@ import java.awt.event.ActionEvent;
 
 public class GameBoardPanel extends BaseGameBoard {
 
-    private GameState gameState;
+    public GameBoard[][] localGameBoards = new GameBoard[3][3];
+    public GameState gameState;
     private JButton[][] gameBoardButtons = new JButton[9][9];
-    private GameBoard[][] localGameBoards = new GameBoard[3][3];
+    private AI aiPlayer;
 
     public GameBoardPanel() {
+        aiPlayer = new AI("O", this);
         gameState = new GameState();
         setBackground(Color.BLACK);
 
@@ -20,7 +22,7 @@ public class GameBoardPanel extends BaseGameBoard {
         setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         for (int i = 0; i < localGameBoards.length; i++) {
             for (int j = 0; j < localGameBoards[i].length; j++) {
-                localGameBoards[i][j] = new GameBoard(gameState);
+                localGameBoards[i][j] = new GameBoard(gameState, aiPlayer);
                 add(localGameBoards[i][j]);
             }
         }
@@ -60,30 +62,36 @@ public class GameBoardPanel extends BaseGameBoard {
 
     }
 
+    public void setActiveBasedOnLastMove() {
+        if (localGameBoards[gameState.lastMove.x][gameState.lastMove.y].boardFinished()) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    localGameBoards[i][j].setActive(true);
+                }
+                localGameBoards[gameState.lastMove.x][gameState.lastMove.y].setActive(false);
+            }
+        } else {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    localGameBoards[i][j].setActive(false);
+                }
+            }
+            localGameBoards[gameState.lastMove.x][gameState.lastMove.y].setActive(true);
+        }
+    }
+
     private class GameStateHandler implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
-            if (localGameBoards[gameState.last_move.x][gameState.last_move.y].boardFinished()) {
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        localGameBoards[i][j].setActive(true);
-                    }
-                    localGameBoards[gameState.last_move.x][gameState.last_move.y].setActive(false);
-                }
-            } else {
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        localGameBoards[i][j].setActive(false);
-                    }
-                }
-                localGameBoards[gameState.last_move.x][gameState.last_move.y].setActive(true);
-            }
+            setActiveBasedOnLastMove();
             // Could be optimized but this is fine
             for (int i = 0; i < localGameBoards.length; i++) {
                 for (int j = 0; j < localGameBoards[i].length; j++) {
                     board[i][j] = localGameBoards[i][j].winner;
                 }
             }
+            if (!gameState.player1Turn)
+                aiPlayer.GetNextMove(100);
 
             repaint();
         }

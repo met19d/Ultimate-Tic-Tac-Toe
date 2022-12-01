@@ -10,13 +10,13 @@ import java.awt.dnd.DragSource;
 
 public class GameBoard extends BaseGameBoard implements ActionListener {
     public boolean frameDone = false;
+    public JButton[][] buttons = new JButton[3][3];
 
     private List<JButton> buttonArray = new ArrayList<JButton>();
-    private JButton[][] buttons = new JButton[3][3];
     private GameState gameState;
     private Boolean isActive = true;
 
-    public GameBoard(GameState gameState) {
+    public GameBoard(GameState gameState, AI aiPlayer) {
         setLayout(new GridLayout(3, 3));
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setBackground(Color.BLACK);
@@ -41,7 +41,7 @@ public class GameBoard extends BaseGameBoard implements ActionListener {
         int col = (int) clicked.getClientProperty("column");
 
         if (!boardFinished() && clicked.getText() == "" && isActive) {
-            if (gameState.player1_turn) {
+            if (gameState.player1Turn) {
                 clicked.setForeground(crossColor);
                 clicked.setText("X");
                 board[row][col] = "X";
@@ -50,8 +50,8 @@ public class GameBoard extends BaseGameBoard implements ActionListener {
                 clicked.setText("O");
                 board[row][col] = "O";
             }
-            gameState.player1_turn = !gameState.player1_turn;
-            gameState.last_move = new Coordinates(row, col);
+            gameState.player1Turn = !gameState.player1Turn;
+            gameState.lastMove = new Coordinates(row, col);
             clicked.setCursor(DragSource.DefaultMoveNoDrop);
 
             winner = checkWinner();
@@ -89,6 +89,10 @@ public class GameBoard extends BaseGameBoard implements ActionListener {
                 button.setCursor(DragSource.DefaultMoveNoDrop);
             }
         }
+    }
+
+    public boolean getActive() {
+        return isActive;
     }
 
 }
