@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.*;
+import java.awt.dnd.DragSource;
 
 public class GameBoard extends JPanel implements ActionListener {
     public String[][] board = {
@@ -21,10 +22,12 @@ public class GameBoard extends JPanel implements ActionListener {
     private GameState gameState;
     private Boolean isActive = true;
 
-    private static Color activeColor = new Color(100, 0, 255);
-    private static Color nonActiveColor = Color.GRAY;
-    private static Color crossColor = Color.BLUE;
-    private static Color circleColor = Color.RED;
+    private final static Color activeColor = new Color(100, 0, 255);
+    private final static Color nonActiveColor = Color.GRAY;
+    private final static Color crossColor = Color.BLUE;
+    private final static Color circleColor = Color.RED;
+
+    private final static Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
     public GameBoard(GameState gameState) {
         setLayout(new GridLayout(3, 3));
@@ -39,16 +42,6 @@ public class GameBoard extends JPanel implements ActionListener {
         }
     }
 
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        for (JButton button : buttonArray) {
-            if (button.getText().equals(""))
-                button.setEnabled(enabled);
-        }
-        repaint();
-    }
-
     public void add(JButton comp) {
         super.add(comp);
         buttonArray.add(comp);
@@ -61,7 +54,6 @@ public class GameBoard extends JPanel implements ActionListener {
         int col = (int) clicked.getClientProperty("column");
 
         if (!boardFinished() && clicked.getText() == "" && isActive) {
-
             if (gameState.player1_turn) {
                 clicked.setForeground(crossColor);
                 clicked.setText("X");
@@ -73,6 +65,7 @@ public class GameBoard extends JPanel implements ActionListener {
             }
             gameState.player1_turn = !gameState.player1_turn;
             gameState.last_move = new Coordinates(row, col);
+            clicked.setCursor(DragSource.DefaultMoveNoDrop);
 
             winner = checkWinner();
             repaint();
@@ -85,17 +78,22 @@ public class GameBoard extends JPanel implements ActionListener {
 
         if (boardFinished()) {
             setBackground(nonActiveColor);
+            drawWinner();
             SwingUtilities.invokeLater(() -> {
-                if (winner.equals("X"))
-                    drawCross(5, crossColor);
-                else if (winner.equals("O"))
-                    drawCircle(5, circleColor);
+                drawWinner();
             });
         } else if (isActive) {
             setBackground(activeColor);
         } else {
             setBackground(Color.BLACK);
         }
+    }
+
+    private void drawWinner() {
+        if (winner.equals("X"))
+            drawCross(5, crossColor);
+        else if (winner.equals("O"))
+            drawCircle(5, circleColor);
     }
 
     private void drawCross(int thickness, Color c) {
@@ -117,11 +115,13 @@ public class GameBoard extends JPanel implements ActionListener {
         this.isActive = isActive;
         if (isActive) {
             for (JButton button : buttonArray) {
-                button.setBackground(Color.white);
+                if (button.getText().equals("")) {
+                    button.setCursor(defaultCursor);
+                }
             }
         } else {
             for (JButton button : buttonArray) {
-                button.setBackground(Color.gray);
+                button.setCursor(DragSource.DefaultMoveNoDrop);
             }
         }
     }
