@@ -19,8 +19,13 @@ public class GameBoard extends JPanel implements ActionListener {
     private List<JButton> buttonArray = new ArrayList<JButton>();
     private JButton[][] buttons = new JButton[3][3];
     private GameState gameState;
-    private Boolean IsActive = true;
-    
+    private Boolean isActive = true;
+
+    private static Color activeColor = new Color(100, 0, 255);
+    private static Color nonActiveColor = Color.GRAY;
+    private static Color crossColor = Color.BLUE;
+    private static Color circleColor = Color.RED;
+
     public GameBoard(GameState gameState) {
         setLayout(new GridLayout(3, 3));
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -55,43 +60,43 @@ public class GameBoard extends JPanel implements ActionListener {
         int row = (int) clicked.getClientProperty("row");
         int col = (int) clicked.getClientProperty("column");
 
-        if (!boardFinished() && clicked.getText() == "" && IsActive) {
+        if (!boardFinished() && clicked.getText() == "" && isActive) {
 
             if (gameState.player1_turn) {
-                clicked.setForeground(Color.BLUE);
+                clicked.setForeground(crossColor);
                 clicked.setText("X");
                 board[row][col] = "X";
             } else {
-                clicked.setForeground(Color.RED);
+                clicked.setForeground(circleColor);
                 clicked.setText("O");
                 board[row][col] = "O";
             }
             gameState.player1_turn = !gameState.player1_turn;
-            gameState.last_move = new Coordinates(row, col); 
-            
+            gameState.last_move = new Coordinates(row, col);
+
             winner = checkWinner();
             repaint();
         }
 
     }
 
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         if (boardFinished()) {
-            setBackground(Color.GRAY);
+            setBackground(nonActiveColor);
             SwingUtilities.invokeLater(() -> {
                 if (winner.equals("X"))
-                    drawCross(5, Color.BLUE);
-                else
-                    drawCircle(5, Color.RED);
+                    drawCross(5, crossColor);
+                else if (winner.equals("O"))
+                    drawCircle(5, circleColor);
             });
+        } else if (isActive) {
+            setBackground(activeColor);
         } else {
-            setBackground(new Color(100, 0, 255));
+            setBackground(Color.BLACK);
         }
     }
-
 
     private void drawCross(int thickness, Color c) {
         Graphics2D g2d = (Graphics2D) getGraphics();
@@ -108,9 +113,9 @@ public class GameBoard extends JPanel implements ActionListener {
         g2d.drawOval(0, 0, getWidth(), getHeight());
     }
 
-    public void setActive(boolean isactive) {
-        IsActive = isactive;
-        if(isactive){
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+        if (isActive) {
             for (JButton button : buttonArray) {
                 button.setBackground(Color.white);
             }
@@ -120,7 +125,7 @@ public class GameBoard extends JPanel implements ActionListener {
             }
         }
     }
-    
+
     public boolean boardFinished() {
         return (checkWinner() != null);
     }

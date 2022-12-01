@@ -47,8 +47,7 @@ public class GameBoardPanel extends JPanel {
     private class GameStateHandler implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
-            if(localGameBoards[gameState.last_move.x][gameState.last_move.y].boardFinished())
-            { 
+            if (localGameBoards[gameState.last_move.x][gameState.last_move.y].boardFinished()) {
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
                         localGameBoards[i][j].setActive(true);
@@ -63,7 +62,7 @@ public class GameBoardPanel extends JPanel {
                 }
                 localGameBoards[gameState.last_move.x][gameState.last_move.y].setActive(true);
             }
-            
+
             repaint();
         }
     }
