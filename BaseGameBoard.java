@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.*;
 
@@ -10,6 +9,7 @@ public class BaseGameBoard extends JPanel {
             { "", "", "" }
     };
     public String winner = "";
+    public Coordinates globalLocation;
 
     public final static Color activeColor = new Color(100, 0, 255);
     public final static Color nonActiveColor = Color.GRAY;
@@ -58,11 +58,11 @@ public class BaseGameBoard extends JPanel {
 
     public String checkWinner() {
         String winner = "";
-        ArrayList<Integer> available = new ArrayList<Integer>();
+        boolean validMovesLeft = false;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j].equals("")) {
-                    available.add(1);
+                    validMovesLeft = true;
                 }
             }
         }
@@ -89,7 +89,7 @@ public class BaseGameBoard extends JPanel {
             winner = board[2][0];
         }
 
-        if (winner == null && available.size() == 0) {
+        if (winner.equals("") && !validMovesLeft) {
             return "draw";
         } else {
             return winner;

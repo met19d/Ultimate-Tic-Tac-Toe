@@ -16,13 +16,13 @@ public class GameBoardPanel extends BaseGameBoard {
     public GameBoardPanel() {
         aiPlayer = new AI("O", this);
         gameState = new GameState();
-        setBackground(Color.BLACK);
+        setBackground(Color.ORANGE);
 
         setLayout(new GridLayout(3, 3, 3, 3));
         setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         for (int i = 0; i < localGameBoards.length; i++) {
             for (int j = 0; j < localGameBoards[i].length; j++) {
-                localGameBoards[i][j] = new GameBoard(gameState, aiPlayer);
+                localGameBoards[i][j] = new GameBoard(gameState, i, j);
                 add(localGameBoards[i][j]);
             }
         }
@@ -78,18 +78,21 @@ public class GameBoardPanel extends BaseGameBoard {
             }
             localGameBoards[gameState.lastMove.x][gameState.lastMove.y].setActive(true);
         }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (localGameBoards[i][j].boardFinished())
+                    localGameBoards[i][j].setActive(false);
+                board[i][j] = localGameBoards[i][j].winner;
+            }
+        }
+
     }
 
     private class GameStateHandler implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
             setActiveBasedOnLastMove();
-            // Could be optimized but this is fine
-            for (int i = 0; i < localGameBoards.length; i++) {
-                for (int j = 0; j < localGameBoards[i].length; j++) {
-                    board[i][j] = localGameBoards[i][j].winner;
-                }
-            }
+
             if (!gameState.player1Turn)
                 aiPlayer.GetNextMove(100);
 

@@ -16,7 +16,8 @@ public class GameBoard extends BaseGameBoard implements ActionListener {
     private GameState gameState;
     private Boolean isActive = true;
 
-    public GameBoard(GameState gameState, AI aiPlayer) {
+    public GameBoard(GameState gameState, int i, int j) {
+        globalLocation = new Coordinates(i, j);
         setLayout(new GridLayout(3, 3));
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setBackground(Color.BLACK);
