@@ -2,6 +2,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import screens.game.GamePanel;
+import screens.menu.MenuPanel;
 
 public class UltimateTicTacToe {
     public static void createGame() {
@@ -12,7 +13,9 @@ public class UltimateTicTacToe {
         frame.setVisible(true);
 
         GamePanel gamePanel = new GamePanel();
-        frame.add(gamePanel);
+        MenuPanel mainMenu = new MenuPanel();
+        // frame.add(gamePanel);
+        frame.add(mainMenu);
     }
 
     public static void main(String[] args) {
