@@ -13,6 +13,7 @@ import java.awt.Graphics;
 
 public class TitlePanel extends JPanel {
     public JButton menu = new JButton();
+    public JButton restart = new JButton();
     public JLabel turnLabel = new JLabel();
     private GameState gameState;
 
@@ -30,9 +31,14 @@ public class TitlePanel extends JPanel {
         menu.setFont(new Font("BOLD", Font.BOLD, 15));
         menu.setEnabled(true);
 
+        restart.setText("Restart");
+        restart.setFont(new Font("BOLD", Font.BOLD, 15));
+        restart.setEnabled(true);
+
         setLayout(new BorderLayout());
         add(turnLabel);
         add(menu, BorderLayout.WEST);
+        add(restart, BorderLayout.EAST);
     }
 
     public void paintComponent(Graphics g) {
