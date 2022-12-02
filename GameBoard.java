@@ -10,8 +10,6 @@ import java.awt.dnd.DragSource;
 
 public class GameBoard extends BaseGameBoard implements ActionListener {
     public boolean frameDone = false;
-    public JButton[][] buttons = new JButton[3][3];
-
     private List<JButton> buttonArray = new ArrayList<JButton>();
     private GameState gameState;
     private Boolean isActive = true;
@@ -22,12 +20,6 @@ public class GameBoard extends BaseGameBoard implements ActionListener {
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setBackground(Color.BLACK);
         this.gameState = gameState;
-    }
-
-    public void ready() {
-        for (int i = 0; i < buttonArray.size(); i++) {
-            buttons[i / 3][i % 3] = buttonArray.get(i);
-        }
     }
 
     public void add(JButton comp) {

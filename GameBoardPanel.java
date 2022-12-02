@@ -43,12 +43,6 @@ public class GameBoardPanel extends BaseGameBoard {
                 localGameBoards[panelI][panelJ].add(gameBoardButtons[i][j]);
             }
         }
-
-        for (GameBoard[] boards : localGameBoards) {
-            for (GameBoard gameBoard : boards) {
-                gameBoard.ready();
-            }
-        }
     }
 
     public void paintComponent(Graphics g) {
