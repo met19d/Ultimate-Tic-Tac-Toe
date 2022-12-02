@@ -29,11 +29,11 @@ public class TicTacToe extends JPanel {
         board[row][column] = play;
     }
 
-    public void drawWinner() {
+    public void drawWinner(int thickness) {
         if (winner.equals("X"))
-            drawCross(5, crossColor);
+            drawCross(thickness, crossColor);
         else if (winner.equals("O"))
-            drawCircle(5, circleColor);
+            drawCircle(thickness, circleColor);
     }
 
     private void drawCross(int thickness, Color c) {
