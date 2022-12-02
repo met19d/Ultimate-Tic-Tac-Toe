@@ -3,18 +3,32 @@ import javax.swing.SwingUtilities;
 
 import screens.game.GamePanel;
 import screens.menu.MenuPanel;
+import java.awt.event.ActionEvent;
 
 public class UltimateTicTacToe {
+    public static JFrame frame;
+    public static GamePanel gamePanel;
+    public static MenuPanel mainMenu;
+
     public static void createGame() {
-        JFrame frame = new JFrame("Ultimate Tic-Tac-Toe");
+        frame = new JFrame("Ultimate Tic-Tac-Toe");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 700);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        GamePanel gamePanel = new GamePanel();
-        MenuPanel mainMenu = new MenuPanel();
-        // frame.add(gamePanel);
+        gamePanel = new GamePanel((ActionEvent e) -> {
+            frame.remove(gamePanel);
+            frame.add(mainMenu);
+            mainMenu.reset();
+        });
+
+        mainMenu = new MenuPanel((ActionEvent e) -> {
+            frame.remove(mainMenu);
+            frame.add(gamePanel);
+            gamePanel.reset();
+        });
+
         frame.add(mainMenu);
     }
 
@@ -24,5 +38,4 @@ public class UltimateTicTacToe {
         });
 
     }
-
 }

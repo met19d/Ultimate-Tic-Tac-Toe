@@ -12,8 +12,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 public class TitlePanel extends JPanel {
+    public JButton menu = new JButton();
     private JLabel turnLabel = new JLabel();
-    private JButton menu = new JButton();
     private GameState gameState;
 
     public TitlePanel(GameState gameState) {

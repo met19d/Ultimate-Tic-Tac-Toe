@@ -6,8 +6,6 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.BoxLayout;
 
-import GameLogic.GameState;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -19,12 +17,17 @@ import java.awt.event.ActionEvent;
 
 public class MenuPanel extends JPanel {
 
-    public MenuPanel() {
+    public MenuPanel(ActionListener swapPanelLogic) {
         setBackground(Color.DARK_GRAY);
         setLayout(new GridLayout(2, 1));
 
-        add(new PlayGamePanel());
+        add(new PlayGamePanel(swapPanelLogic));
         add(new PlayAIPanel());
+    }
+
+    public void reset() {
+        revalidate();
+        repaint();
     }
 }
 
@@ -32,7 +35,7 @@ class PlayGamePanel extends JPanel {
     private JButton humanVHuman = new JButton();
     private JLabel gameTitle = new JLabel();
 
-    public PlayGamePanel() {
+    public PlayGamePanel(ActionListener swapPanelLogic) {
         setBackground(Color.DARK_GRAY);
         setLayout(new BorderLayout());
 
@@ -44,9 +47,7 @@ class PlayGamePanel extends JPanel {
         add(gameTitle, BorderLayout.CENTER);
         add(humanVHuman, BorderLayout.PAGE_END);
 
-        humanVHuman.addActionListener((ActionEvent e) -> {
-            gameTitle.setText("TODO"); // to be replaced with logic
-        });
+        humanVHuman.addActionListener(swapPanelLogic);
     }
 }
 
