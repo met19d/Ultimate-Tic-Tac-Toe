@@ -2,11 +2,13 @@ package GameLogic;
 
 import java.util.ArrayList;
 import javax.swing.JButton;
+import java.util.Random;
 
 public class AI {
     String playingIcon;
     String opponentString;
     UltimateTicTacToePanel fullGame;
+    Random random = new Random();
 
     AI(String player, UltimateTicTacToePanel game) {
         this.fullGame = game;
@@ -50,6 +52,29 @@ public class AI {
         if (bestButton != null) {
             bestButton.doClick();
         }
+    }
+
+    public void GetNextRandomMove() {
+        ArrayList<JButton> availableButtons = new ArrayList<>();
+        ArrayList<TicTacToePanel> activeBoards = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (fullGame.localGameBoards[i][j].getActive()) {
+                    activeBoards.add(fullGame.localGameBoards[i][j]);
+                }
+            }
+        }
+
+        for (TicTacToePanel game : activeBoards) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (game.getState(i, j).equals("")) {
+                        availableButtons.add(game.buttons[i][j]);
+                    }
+                }
+            }
+        }
+        availableButtons.get(random.nextInt(availableButtons.size())).doClick();
     }
 
     private int max(int a, int b) {
@@ -138,23 +163,6 @@ public class AI {
             }
             return bestScore;
         }
-    }
-
-    public int randomMove() {
-        String check = fullGame.checkWinner();
-        if (!check.equals("")) {
-            return getScoreFromWinner(check);
-        }
-
-        ArrayList<TicTacToe> activeBoards = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (fullGame.localGameBoards[i][j].getActive()) {
-                    activeBoards.add(fullGame.localGameBoards[i][j]);
-                }
-            }
-        }
-        return 0;
     }
 
 }
