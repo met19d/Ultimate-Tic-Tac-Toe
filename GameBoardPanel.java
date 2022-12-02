@@ -13,12 +13,13 @@ public class GameBoardPanel extends BaseGameBoard {
     public GameState gameState;
     private JButton[][] gameBoardButtons = new JButton[9][9];
     private AI aiPlayer;
+    private GamePanel fullPanel;
 
-
-    public GameBoardPanel() {
+    public GameBoardPanel(GameState gameState, GamePanel fullPanel) {
+        this.gameState = gameState;
+        this.fullPanel = fullPanel;
         aiPlayer = new AI("O", this);
-        gameState = new GameState();
-    
+
         setBackground(Color.ORANGE);
 
         setLayout(new GridLayout(3, 3, 3, 3));
@@ -85,8 +86,8 @@ public class GameBoardPanel extends BaseGameBoard {
             for (int j = 0; j < 3; j++) {
                 if (localGameBoards[i][j].boardFinished())
                     localGameBoards[i][j].setActive(false);
-                    board[i][j] = localGameBoards[i][j].winner;
-                }
+                board[i][j] = localGameBoards[i][j].winner;
+            }
         }
 
     }
@@ -96,9 +97,10 @@ public class GameBoardPanel extends BaseGameBoard {
         public void actionPerformed(ActionEvent event) {
             setActiveBasedOnLastMove();
 
-            if (!gameState.player1Turn)
-                aiPlayer.GetNextMove(100);
+            // if (!gameState.player1Turn)
+            // aiPlayer.GetNextMove(100);
 
+            fullPanel.actionPerformed();
             repaint();
         }
     }
