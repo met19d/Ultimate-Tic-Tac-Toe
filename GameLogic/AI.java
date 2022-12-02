@@ -10,6 +10,8 @@ public class AI {
     UltimateTicTacToePanel fullGame;
     Random random = new Random();
 
+    private int maxDepth;
+
     AI(String player, UltimateTicTacToePanel game) {
         this.fullGame = game;
         playingIcon = player;
@@ -17,6 +19,8 @@ public class AI {
     }
 
     public void GetNextMove(int maxDepth) {
+        this.maxDepth = maxDepth;
+        ArrayList<JButton> bestButtons = new ArrayList<>();
         ArrayList<TicTacToePanel> activeBoards = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -25,33 +29,36 @@ public class AI {
                 }
             }
         }
-        JButton bestButton = null;
 
         int bestScore = -2;
         for (TicTacToePanel game : activeBoards) {
             int bestBoardMove = -2;
-            JButton bestBoardButton = null;
+            ArrayList<JButton> availableButtons = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     // Is the spot available
                     if (game.getState(i, j).equals("")) {
                         int score = testMove(game, playingIcon, i, j, 0, false);
 
-                        if (score >= bestBoardMove) {
+                        if (score > bestBoardMove) {
                             bestBoardMove = score;
-                            bestBoardButton = game.buttons[i][j];
+                            availableButtons.clear();
+                            availableButtons.add(game.buttons[i][j]);
+                        } else if (score == bestBoardMove) {
+                            availableButtons.add(game.buttons[i][j]);
                         }
                     }
                 }
             }
-            if (bestBoardMove >= bestScore) {
+            if (bestBoardMove > bestScore) {
                 bestScore = bestBoardMove;
-                bestButton = bestBoardButton;
+                bestButtons.clear();
+                bestButtons.addAll(availableButtons);
+            } else if (bestBoardMove == bestScore) {
+                bestButtons.addAll(availableButtons);
             }
         }
-        if (bestButton != null) {
-            bestButton.doClick();
-        }
+        bestButtons.get(random.nextInt(bestButtons.size())).doClick();
     }
 
     public void GetNextRandomMove() {
@@ -126,7 +133,7 @@ public class AI {
             }
         }
 
-        if (depth > 2) {
+        if (depth > maxDepth) {
             return 0;
         }
 
