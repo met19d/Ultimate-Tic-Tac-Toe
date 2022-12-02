@@ -68,9 +68,9 @@ public class TicTacToePanel extends TicTacToe implements ActionListener {
 
         if (boardFinished()) {
             setBackground(nonActiveColor);
-            drawWinner();
+            drawWinner(5);
             SwingUtilities.invokeLater(() -> {
-                drawWinner();
+                drawWinner(5);
             });
         } else if (isActive) {
             setBackground(activeColor);
