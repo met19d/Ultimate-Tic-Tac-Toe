@@ -1,3 +1,5 @@
+package GameLogic;
+
 public class Coordinates {
     int x, y;
 

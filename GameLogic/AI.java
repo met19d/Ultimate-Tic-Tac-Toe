@@ -1,19 +1,21 @@
+package GameLogic;
+
 import java.util.ArrayList;
 import javax.swing.JButton;
 
 public class AI {
     String playingIcon;
     String opponentString;
-    GameBoardPanel fullGame;
+    UltimateTicTacToePanel fullGame;
 
-    AI(String player, GameBoardPanel game) {
+    AI(String player, UltimateTicTacToePanel game) {
         this.fullGame = game;
         playingIcon = player;
         opponentString = player.equals("X") ? "O" : "X";
     }
 
     public void GetNextMove(int maxDepth) {
-        ArrayList<GameBoard> activeBoards = new ArrayList<>();
+        ArrayList<TicTacToePanel> activeBoards = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (fullGame.localGameBoards[i][j].getActive()) {
@@ -24,8 +26,9 @@ public class AI {
         JButton bestButton = null;
 
         int bestScore = -2;
-        for (GameBoard game : activeBoards) {
+        for (TicTacToePanel game : activeBoards) {
             int bestBoardMove = -2;
+            JButton bestBoardButton = null;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     // Is the spot available
@@ -34,16 +37,16 @@ public class AI {
 
                         if (score >= bestBoardMove) {
                             bestBoardMove = score;
-                            bestButton = game.buttons[i][j];
+                            bestBoardButton = game.buttons[i][j];
                         }
                     }
                 }
             }
-            // if (bestBoardMove >)
+            if (bestBoardMove >= bestScore) {
+                bestScore = bestBoardMove;
+                bestButton = bestBoardButton;
+            }
         }
-        // System.out.println(activeBoards.size());
-        System.out.println(bestScore);
-
         if (bestButton != null) {
             bestButton.doClick();
         }
@@ -65,7 +68,7 @@ public class AI {
         return -1;
     }
 
-    private int testMove(BaseGameBoard game, String player, int i, int j, int depth,
+    private int testMove(TicTacToe game, String player, int i, int j, int depth,
             boolean isMaximizing) {
         Coordinates lastMove = fullGame.gameState.lastMove;
 
@@ -80,21 +83,16 @@ public class AI {
         fullGame.gameState.lastMove = lastMove;
         game.winner = "";
         fullGame.setActiveBasedOnLastMove();
-        if (score != 0)
-            System.out.println(score);
         return score;
     }
 
     public int minimax(int depth, boolean isMaximizing) {
         String check = fullGame.checkWinner();
         if (!check.equals("")) {
-            // System.out.println(check);
-            // System.out.println(isMaximizing);
-            // System.out.println(getScoreFromWinner(check));
             return getScoreFromWinner(check);
         }
 
-        ArrayList<BaseGameBoard> activeBoards = new ArrayList<>();
+        ArrayList<TicTacToe> activeBoards = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (fullGame.localGameBoards[i][j].getActive()) {
@@ -103,13 +101,13 @@ public class AI {
             }
         }
 
-        if (depth > 3) {
+        if (depth > 2) {
             return 0;
         }
 
         if (isMaximizing) {
             int bestScore = -2;
-            for (BaseGameBoard game : activeBoards) {
+            for (TicTacToe game : activeBoards) {
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
                         if (game.getState(i, j).equals("")) {
@@ -125,7 +123,7 @@ public class AI {
             return bestScore;
         } else {
             int bestScore = 2;
-            for (BaseGameBoard game : activeBoards) {
+            for (TicTacToe game : activeBoards) {
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
                         if (game.getState(i, j).equals("")) {
@@ -148,7 +146,7 @@ public class AI {
             return getScoreFromWinner(check);
         }
 
-        ArrayList<BaseGameBoard> activeBoards = new ArrayList<>();
+        ArrayList<TicTacToe> activeBoards = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (fullGame.localGameBoards[i][j].getActive()) {

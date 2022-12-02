@@ -1,4 +1,7 @@
+package GameLogic;
+
 import javax.swing.*;
+
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,18 +11,25 @@ import java.awt.Color;
 import java.awt.*;
 import java.awt.dnd.DragSource;
 
-public class GameBoard extends BaseGameBoard implements ActionListener {
+public class TicTacToePanel extends TicTacToe implements ActionListener {
     public boolean frameDone = false;
+    public JButton[][] buttons = new JButton[3][3];
     private List<JButton> buttonArray = new ArrayList<JButton>();
     private GameState gameState;
     private Boolean isActive = true;
 
-    public GameBoard(GameState gameState, int i, int j) {
+    public TicTacToePanel(GameState gameState, int i, int j) {
         globalLocation = new Coordinates(i, j);
         setLayout(new GridLayout(3, 3));
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setBackground(Color.BLACK);
         this.gameState = gameState;
+    }
+
+    public void ready() {
+        for (int i = 0; i < buttonArray.size(); i++) {
+            buttons[i / 3][i % 3] = buttonArray.get(i);
+        }
     }
 
     public void add(JButton comp) {

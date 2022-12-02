@@ -1,6 +1,8 @@
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import screens.game.GamePanel;
+
 public class UltimateTicTacToe {
     public static void createGame() {
         JFrame frame = new JFrame("Ultimate Tic-Tac-Toe");

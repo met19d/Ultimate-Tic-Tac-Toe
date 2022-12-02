@@ -1,8 +1,11 @@
+package GameLogic;
+
 import javax.swing.*;
+
 import java.awt.Color;
 import java.awt.*;
 
-public class BaseGameBoard extends JPanel {
+public class TicTacToe extends JPanel {
     public String[][] board = {
             { "", "", "" },
             { "", "", "" },

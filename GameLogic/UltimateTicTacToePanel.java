@@ -1,21 +1,25 @@
+package GameLogic;
+
 import javax.swing.*;
+
+import screens.game.GamePanel;
+
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class GameBoardPanel extends BaseGameBoard {
+public class UltimateTicTacToePanel extends TicTacToe {
 
-    public GameBoard[][] localGameBoards = new GameBoard[3][3];
+    public TicTacToePanel[][] localGameBoards = new TicTacToePanel[3][3];
     public GameState gameState;
     private JButton[][] gameBoardButtons = new JButton[9][9];
     private AI aiPlayer;
     private GamePanel fullPanel;
 
-    public GameBoardPanel(GameState gameState, GamePanel fullPanel) {
+    public UltimateTicTacToePanel(GameState gameState, GamePanel fullPanel) {
         this.gameState = gameState;
         this.fullPanel = fullPanel;
         aiPlayer = new AI("O", this);
@@ -26,7 +30,7 @@ public class GameBoardPanel extends BaseGameBoard {
         setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         for (int i = 0; i < localGameBoards.length; i++) {
             for (int j = 0; j < localGameBoards[i].length; j++) {
-                localGameBoards[i][j] = new GameBoard(gameState, i, j);
+                localGameBoards[i][j] = new TicTacToePanel(gameState, i, j);
                 add(localGameBoards[i][j]);
             }
         }
@@ -41,6 +45,11 @@ public class GameBoardPanel extends BaseGameBoard {
                 gameBoardButtons[i][j].setFont(new Font("BOLD", Font.BOLD, 35));
                 gameBoardButtons[i][j].addActionListener(new GameStateHandler());
                 localGameBoards[panelI][panelJ].add(gameBoardButtons[i][j]);
+            }
+        }
+        for (TicTacToePanel[] boards : localGameBoards) {
+            for (TicTacToePanel gameBoard : boards) {
+                gameBoard.ready();
             }
         }
     }
@@ -91,8 +100,8 @@ public class GameBoardPanel extends BaseGameBoard {
         public void actionPerformed(ActionEvent event) {
             setActiveBasedOnLastMove();
 
-            // if (!gameState.player1Turn)
-            // aiPlayer.GetNextMove(100);
+            if (!gameState.player1Turn)
+                aiPlayer.GetNextMove(100);
 
             fullPanel.actionPerformed();
             repaint();

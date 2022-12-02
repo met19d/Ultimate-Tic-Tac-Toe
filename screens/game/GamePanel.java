@@ -1,13 +1,19 @@
+package screens.game;
+
 import javax.swing.JPanel;
+
+import GameLogic.GameState;
+import GameLogic.UltimateTicTacToePanel;
+
 import java.awt.BorderLayout;
 
 public class GamePanel extends JPanel {
-    private GameBoardPanel gameBoardPanel;
+    private UltimateTicTacToePanel gameBoardPanel;
     private TitlePanel titlePanel;
     private GameState masterGame = new GameState();
 
-    GamePanel() {
-        gameBoardPanel = new GameBoardPanel(masterGame, this);
+    public GamePanel() {
+        gameBoardPanel = new UltimateTicTacToePanel(masterGame, this);
         titlePanel = new TitlePanel(masterGame);
 
         setLayout(new BorderLayout());
