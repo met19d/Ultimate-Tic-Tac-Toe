@@ -23,10 +23,11 @@ public class UltimateTicTacToe {
             mainMenu.reset();
         });
 
-        mainMenu = new MenuPanel((ActionEvent e) -> {
+        mainMenu = new MenuPanel(gamePanel, (ActionEvent e) -> {
             frame.remove(mainMenu);
             frame.add(gamePanel);
             gamePanel.reset();
+            mainMenu.opponentOption();
         });
 
         frame.add(mainMenu);

@@ -5,13 +5,15 @@ import javax.swing.*;
 
 import GameLogic.GameState;
 import GameLogic.UltimateTicTacToePanel;
+import GameLogic.UltimateTicTacToePanel.OpponentType;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Component;
 
 public class GamePanel extends JPanel {
-    private UltimateTicTacToePanel gameBoardPanel;
+    public UltimateTicTacToePanel gameBoardPanel;
     private TitlePanel titlePanel;
     private GameState masterGame = new GameState();
     private ActionListener swapActionListener;
@@ -30,6 +32,11 @@ public class GamePanel extends JPanel {
         titlePanel = new TitlePanel(masterGame);
 
         titlePanel.menu.addActionListener(swapActionListener);
+        titlePanel.restart.addActionListener((ActionEvent e) -> {
+            OpponentType opponent = gameBoardPanel.opponentType;
+            reset();
+            gameBoardPanel.opponentType = opponent;
+        });
 
         add(titlePanel, BorderLayout.NORTH);
         add(gameBoardPanel);

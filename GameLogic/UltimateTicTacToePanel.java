@@ -5,6 +5,7 @@ import javax.swing.*;
 import screens.game.GamePanel;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -18,6 +19,14 @@ public class UltimateTicTacToePanel extends TicTacToe {
     public JButton[][] gameBoardButtons = new JButton[9][9];
     private AI aiPlayer;
     private GamePanel fullPanel;
+
+    public enum OpponentType {
+        advanced,
+        easy,
+        human
+    };
+
+    public OpponentType opponentType;
 
     public UltimateTicTacToePanel(GameState gameState, GamePanel fullPanel) {
         this.gameState = gameState;
@@ -60,9 +69,9 @@ public class UltimateTicTacToePanel extends TicTacToe {
         if (boardFinished()) {
             winner = checkWinner();
             gameState.winner = winner;
-            drawWinner();
+            drawWinner(10);
             SwingUtilities.invokeLater(() -> {
-                drawWinner();
+                drawWinner(10);
             });
             fullPanel.checkForWinner();
         }
@@ -99,8 +108,17 @@ public class UltimateTicTacToePanel extends TicTacToe {
         public void actionPerformed(ActionEvent event) {
             setActiveBasedOnLastMove();
 
-            // if (!gameState.player1Turn)
-            // aiPlayer.GetNextMove(100);
+            if (!gameState.player1Turn) {
+                if (opponentType == OpponentType.advanced) {
+                    setCursor(new Cursor(Cursor.WAIT_CURSOR));
+                    if (localGameBoards[gameState.lastMove.x][gameState.lastMove.y].boardFinished())
+                        aiPlayer.GetNextMove(2);
+                    else
+                        aiPlayer.GetNextMove(3);
+                    setCursor(defaultCursor);
+                } else if (opponentType == OpponentType.easy)
+                    aiPlayer.GetNextRandomMove();
+            }
 
             repaint();
             fullPanel.actionPerformed();
