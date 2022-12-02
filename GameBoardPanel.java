@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
@@ -13,9 +14,11 @@ public class GameBoardPanel extends BaseGameBoard {
     private JButton[][] gameBoardButtons = new JButton[9][9];
     private AI aiPlayer;
 
+
     public GameBoardPanel() {
         aiPlayer = new AI("O", this);
         gameState = new GameState();
+    
         setBackground(Color.ORANGE);
 
         setLayout(new GridLayout(3, 3, 3, 3));
@@ -82,8 +85,8 @@ public class GameBoardPanel extends BaseGameBoard {
             for (int j = 0; j < 3; j++) {
                 if (localGameBoards[i][j].boardFinished())
                     localGameBoards[i][j].setActive(false);
-                board[i][j] = localGameBoards[i][j].winner;
-            }
+                    board[i][j] = localGameBoards[i][j].winner;
+                }
         }
 
     }
