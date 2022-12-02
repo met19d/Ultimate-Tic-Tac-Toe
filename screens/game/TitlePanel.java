@@ -13,7 +13,7 @@ import java.awt.Graphics;
 
 public class TitlePanel extends JPanel {
     public JButton menu = new JButton();
-    private JLabel turnLabel = new JLabel();
+    public JLabel turnLabel = new JLabel();
     private GameState gameState;
 
     public TitlePanel(GameState gameState) {
@@ -37,7 +37,7 @@ public class TitlePanel extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(gameState.winner == "") {
+        if (gameState.winner.equals("")) {
             if (gameState.player1Turn) {
                 turnLabel.setText("Turn: X");
                 turnLabel.setForeground(Color.BLUE);
@@ -45,18 +45,16 @@ public class TitlePanel extends JPanel {
                 turnLabel.setText("Turn: O");
                 turnLabel.setForeground(Color.RED);
             }
-        }
-        else if(gameState.winner == "draw") {
+        } else if (gameState.winner.equals("draw")) {
             turnLabel.setText("Draw!");
             turnLabel.setForeground(Color.BLACK);
-        } else if(gameState.winner == "X") {
+        } else if (gameState.winner.equals("X")) {
             turnLabel.setText("X Wins!");
             turnLabel.setForeground(Color.BLUE);
-        } else if(gameState.winner == "O") {
+        } else if (gameState.winner.equals("O")) {
             turnLabel.setText("O Win!");
-            turnLabel.setForeground(Color.RED);        
+            turnLabel.setForeground(Color.RED);
         }
-
     }
 
 }

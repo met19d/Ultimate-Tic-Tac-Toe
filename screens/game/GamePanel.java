@@ -1,13 +1,14 @@
 package screens.game;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+
 import javax.swing.JPanel;
+import javax.swing.*;
+
 import GameLogic.GameState;
 import GameLogic.UltimateTicTacToePanel;
+
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
-import java.awt.image.BufferedImage;
-
+import java.awt.Component;
 
 public class GamePanel extends JPanel {
     private UltimateTicTacToePanel gameBoardPanel;
@@ -37,11 +38,21 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
-    public void actionPerformed() {
-        titlePanel.repaint();
-        
+    public void checkForWinner() {
+        if (!masterGame.winner.equals("")) {
+            gameBoardPanel.setEnabled(false);
+            for (Component c : gameBoardPanel.getComponents()) {
+                c.setEnabled(false);
+            }
+            for (JButton[] buttons : gameBoardPanel.gameBoardButtons) {
+                for (JButton button : buttons) {
+                    button.setEnabled(false);
+                }
+            }
+        }
     }
 
-    
-
+    public void actionPerformed() {
+        titlePanel.repaint();
+    }
 }

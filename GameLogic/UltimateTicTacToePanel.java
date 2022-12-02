@@ -10,13 +10,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 
 public class UltimateTicTacToePanel extends TicTacToe {
 
     public TicTacToePanel[][] localGameBoards = new TicTacToePanel[3][3];
     public GameState gameState;
-    private JButton[][] gameBoardButtons = new JButton[9][9];
+    public JButton[][] gameBoardButtons = new JButton[9][9];
     private AI aiPlayer;
     private GamePanel fullPanel;
 
@@ -59,22 +58,14 @@ public class UltimateTicTacToePanel extends TicTacToe {
         super.paintComponent(g);
 
         if (boardFinished()) {
-            // Currently does not display
-            // But it does pick up who the winner is
-            // going to put check somewhere else
             winner = checkWinner();
             gameState.winner = winner;
             drawWinner();
             SwingUtilities.invokeLater(() -> {
                 drawWinner();
             });
+            fullPanel.checkForWinner();
         }
-
-    }
-    public BufferedImage getScreenshot() {
-        BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-        paint(img.getGraphics());
-        return img;
     }
 
     public void setActiveBasedOnLastMove() {
@@ -108,11 +99,11 @@ public class UltimateTicTacToePanel extends TicTacToe {
         public void actionPerformed(ActionEvent event) {
             setActiveBasedOnLastMove();
 
-            //if (!gameState.player1Turn)
-             //   aiPlayer.GetNextMove(100);
+            // if (!gameState.player1Turn)
+            // aiPlayer.GetNextMove(100);
 
-            fullPanel.actionPerformed();
             repaint();
+            fullPanel.actionPerformed();
         }
     }
 
