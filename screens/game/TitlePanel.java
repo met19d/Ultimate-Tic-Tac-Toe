@@ -37,13 +37,26 @@ public class TitlePanel extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (gameState.player1Turn) {
-            turnLabel.setText("Turn: X");
-            turnLabel.setForeground(Color.BLUE);
-        } else {
-            turnLabel.setText("Turn: O");
-            turnLabel.setForeground(Color.RED);
+        if(gameState.winner == "") {
+            if (gameState.player1Turn) {
+                turnLabel.setText("Turn: X");
+                turnLabel.setForeground(Color.BLUE);
+            } else {
+                turnLabel.setText("Turn: O");
+                turnLabel.setForeground(Color.RED);
+            }
         }
+        else if(gameState.winner == "draw") {
+            turnLabel.setText("Draw!");
+            turnLabel.setForeground(Color.BLACK);
+        } else if(gameState.winner == "X") {
+            turnLabel.setText("X Wins!");
+            turnLabel.setForeground(Color.BLUE);
+        } else if(gameState.winner == "O") {
+            turnLabel.setText("O Win!");
+            turnLabel.setForeground(Color.RED);        
+        }
+
     }
 
 }

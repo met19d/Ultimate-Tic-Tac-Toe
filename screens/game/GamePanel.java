@@ -1,11 +1,13 @@
 package screens.game;
-
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import GameLogic.GameState;
 import GameLogic.UltimateTicTacToePanel;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
+
 
 public class GamePanel extends JPanel {
     private UltimateTicTacToePanel gameBoardPanel;
@@ -37,6 +39,9 @@ public class GamePanel extends JPanel {
 
     public void actionPerformed() {
         titlePanel.repaint();
+        
     }
+
+    
 
 }
