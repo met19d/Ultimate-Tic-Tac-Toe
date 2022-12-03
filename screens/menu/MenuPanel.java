@@ -3,6 +3,7 @@ package screens.menu;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import GameLogic.UltimateTicTacToePanel.OpponentType;
@@ -84,7 +85,7 @@ class PlayAIPanel extends JPanel {
         setBackground(Color.DARK_GRAY);
         setLayout(new GridLayout(3, 5, 20, 100));
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 11; i++) {
             add(new JLabel());
         }
 
@@ -108,6 +109,19 @@ class PlayAIPanel extends JPanel {
         });
         advanceAI.setHorizontalAlignment(SwingConstants.CENTER);
         add(advanceAI, 8);
+
+        JButton rules = new JButton("Rules ?");
+        rules.addActionListener((ActionEvent e) -> {
+
+            JOptionPane.showMessageDialog(null,
+                    "Each small 3 × 3 tic-tac-toe board is referred to as a local board, and the larger 3 × 3 board is referred to as the global board.\n\n"
+                            +
+                            "The game starts with X playing wherever they want in any of the 81 empty spots. \nThis move 'sends' their opponent to its relative location. \nFor example, if X played in the top right square of their local board, then O needs to play next in the local board at the top right of the global board. \nO can then play in any one of the nine available spots in that local board, each move sending X to a different local board.\n\n"
+                            +
+                            "If a move is played so that it is to win a local board by the rules of normal tic-tac-toe, then the entire local board is marked as a victory for the player in the global board. \nOnce a local board is won by a player or it is filled completely, no more moves may be played in that board. \nIf a player is sent to such a board, then that player may play in any other board. \nGame play ends when either a player wins the global board or there are no legal moves remaining, in which case the game is a draw.",
+                    "Ultimate Tic Tac Toe Rules", JOptionPane.PLAIN_MESSAGE);
+        });
+        add(rules, -1);
 
     }
 }
