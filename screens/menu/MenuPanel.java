@@ -8,8 +8,6 @@ import javax.swing.SwingConstants;
 import GameLogic.UltimateTicTacToePanel.OpponentType;
 import screens.game.GamePanel;
 
-import javax.swing.BoxLayout;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -65,7 +63,8 @@ class PlayGamePanel extends JPanel {
         gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
         gameTitle.setForeground(Color.GREEN);
 
-        humanVHuman.setText("Play Game");
+        humanVHuman.setText("Play Game (PVP)");
+        humanVHuman.setFont(new Font("BOLD", Font.BOLD, 40));
         add(gameTitle, BorderLayout.CENTER);
         add(humanVHuman, BorderLayout.PAGE_END);
 
@@ -83,14 +82,24 @@ class PlayAIPanel extends JPanel {
 
     public PlayAIPanel(ActionListener swapPanelLogic) {
         setBackground(Color.DARK_GRAY);
-        setLayout(new GridLayout(2, 1, 5, 10));
+        setLayout(new GridLayout(3, 5, 20, 100));
+
+        for (int i = 0; i < 12; i++) {
+            add(new JLabel());
+        }
+
+        JLabel orText = new JLabel("Or ...");
+        orText.setFont(new Font("BOLD", Font.BOLD, 40));
+        orText.setHorizontalAlignment(SwingConstants.CENTER);
+        orText.setForeground(Color.WHITE);
+        add(orText, BorderLayout.PAGE_END, 2);
 
         easyAI.setText("Easy AI");
         easyAI.addActionListener(swapPanelLogic);
         easyAI.addActionListener((ActionEvent e) -> {
             selectedOpponent = OpponentType.easy;
         });
-        add(easyAI);
+        add(easyAI, 6);
 
         advanceAI.setText("Advanced AI");
         advanceAI.addActionListener(swapPanelLogic);
@@ -98,7 +107,7 @@ class PlayAIPanel extends JPanel {
             selectedOpponent = OpponentType.advanced;
         });
         advanceAI.setHorizontalAlignment(SwingConstants.CENTER);
-        add(advanceAI);
+        add(advanceAI, 8);
 
     }
 }
