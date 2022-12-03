@@ -83,6 +83,8 @@ public class UltimateTicTacToePanel extends TicTacToe {
     }
 
     public void setActiveBasedOnLastMove() {
+        if (gameState.lastMove == null)
+            return;
         if (localGameBoards[gameState.lastMove.x][gameState.lastMove.y].boardFinished()) {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
@@ -113,7 +115,8 @@ public class UltimateTicTacToePanel extends TicTacToe {
                 || (aiPlayer.playingIcon.equals("X") && gameState.player1Turn)) {
             if (opponentType == OpponentType.advanced) {
                 setCursor(new Cursor(Cursor.WAIT_CURSOR));
-                if (localGameBoards[gameState.lastMove.x][gameState.lastMove.y].boardFinished())
+                if (gameState.lastMove != null
+                        && localGameBoards[gameState.lastMove.x][gameState.lastMove.y].boardFinished())
                     aiPlayer.GetNextMove(2);
                 else
                     aiPlayer.GetNextMove(3);

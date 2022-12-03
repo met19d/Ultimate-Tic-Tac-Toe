@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Cursor;
 
 public class GamePanel extends JPanel {
     public UltimateTicTacToePanel gameBoardPanel;
@@ -33,9 +34,13 @@ public class GamePanel extends JPanel {
 
         titlePanel.menu.addActionListener(swapActionListener);
         titlePanel.restart.addActionListener((ActionEvent e) -> {
+            setCursor(new Cursor(Cursor.WAIT_CURSOR));
             OpponentType opponent = gameBoardPanel.opponentType;
             reset();
             gameBoardPanel.opponentType = opponent;
+            SwingUtilities.invokeLater(() -> {
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            });
         });
 
         add(titlePanel, BorderLayout.NORTH);

@@ -3,6 +3,7 @@ import javax.swing.SwingUtilities;
 
 import screens.game.GamePanel;
 import screens.menu.MenuPanel;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 
 public class UltimateTicTacToe {
@@ -24,10 +25,14 @@ public class UltimateTicTacToe {
         });
 
         mainMenu = new MenuPanel(gamePanel, (ActionEvent e) -> {
+            frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             frame.remove(mainMenu);
             frame.add(gamePanel);
             gamePanel.reset();
             mainMenu.opponentOption();
+            SwingUtilities.invokeLater(() -> {
+                frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            });
         });
 
         frame.add(mainMenu);
