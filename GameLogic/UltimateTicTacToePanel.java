@@ -1,7 +1,7 @@
 package GameLogic;
 
 import javax.swing.*;
-
+import java.util.Random;
 import screens.game.GamePanel;
 
 import java.awt.Color;
@@ -31,7 +31,12 @@ public class UltimateTicTacToePanel extends TicTacToe {
     public UltimateTicTacToePanel(GameState gameState, GamePanel fullPanel) {
         this.gameState = gameState;
         this.fullPanel = fullPanel;
-        aiPlayer = new AI("O", this);
+        String[] options = { "X", "O" };
+        Random r = new Random();
+        aiPlayer = new AI(options[r.nextInt(options.length)], this);
+        SwingUtilities.invokeLater(() -> {
+            aiMove();
+        });
 
         setBackground(Color.ORANGE);
 
@@ -103,23 +108,26 @@ public class UltimateTicTacToePanel extends TicTacToe {
 
     }
 
+    private void aiMove() {
+        if ((aiPlayer.playingIcon.equals("O") && !gameState.player1Turn)
+                || (aiPlayer.playingIcon.equals("X") && gameState.player1Turn)) {
+            if (opponentType == OpponentType.advanced) {
+                setCursor(new Cursor(Cursor.WAIT_CURSOR));
+                if (localGameBoards[gameState.lastMove.x][gameState.lastMove.y].boardFinished())
+                    aiPlayer.GetNextMove(2);
+                else
+                    aiPlayer.GetNextMove(3);
+                setCursor(defaultCursor);
+            } else if (opponentType == OpponentType.easy)
+                aiPlayer.GetNextRandomMove();
+        }
+    }
+
     private class GameStateHandler implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
             setActiveBasedOnLastMove();
-
-            if (!gameState.player1Turn) {
-                if (opponentType == OpponentType.advanced) {
-                    setCursor(new Cursor(Cursor.WAIT_CURSOR));
-                    if (localGameBoards[gameState.lastMove.x][gameState.lastMove.y].boardFinished())
-                        aiPlayer.GetNextMove(2);
-                    else
-                        aiPlayer.GetNextMove(3);
-                    setCursor(defaultCursor);
-                } else if (opponentType == OpponentType.easy)
-                    aiPlayer.GetNextRandomMove();
-            }
-
+            aiMove();
             repaint();
             fullPanel.actionPerformed();
         }
