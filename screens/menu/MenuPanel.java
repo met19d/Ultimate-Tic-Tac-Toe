@@ -3,6 +3,7 @@ package screens.menu;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import GameLogic.UltimateTicTacToePanel.OpponentType;
 import screens.game.GamePanel;
@@ -28,8 +29,9 @@ public class MenuPanel extends JPanel {
 
         playGamePanel = new PlayGamePanel(swapPanelLogic);
         playAIPanel = new PlayAIPanel(swapPanelLogic);
-        add(playGamePanel);
-        add(playAIPanel);
+
+        add(playGamePanel, BorderLayout.NORTH);
+        add(playAIPanel, BorderLayout.CENTER);
     }
 
     public void reset() {
@@ -59,7 +61,8 @@ class PlayGamePanel extends JPanel {
 
         gameTitle.setFont(new Font("BOLD", Font.BOLD, 50));
         gameTitle.setText("Ultimate TIC-TAC-TOE");
-        gameTitle.setAlignmentX(CENTER_ALIGNMENT);
+
+        gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
         gameTitle.setForeground(Color.GREEN);
 
         humanVHuman.setText("Play Game");
@@ -80,10 +83,9 @@ class PlayAIPanel extends JPanel {
 
     public PlayAIPanel(ActionListener swapPanelLogic) {
         setBackground(Color.DARK_GRAY);
-        setLayout(new BoxLayout(this, 0));
+        setLayout(new GridLayout(2, 1, 5, 10));
 
         easyAI.setText("Easy AI");
-        easyAI.setAlignmentX(CENTER_ALIGNMENT);
         easyAI.addActionListener(swapPanelLogic);
         easyAI.addActionListener((ActionEvent e) -> {
             selectedOpponent = OpponentType.easy;
@@ -95,6 +97,7 @@ class PlayAIPanel extends JPanel {
         advanceAI.addActionListener((ActionEvent e) -> {
             selectedOpponent = OpponentType.advanced;
         });
+        advanceAI.setHorizontalAlignment(SwingConstants.CENTER);
         add(advanceAI);
 
     }
